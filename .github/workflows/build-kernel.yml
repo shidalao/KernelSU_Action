@@ -118,8 +118,8 @@ jobs:
         cp -Rf lineageos android-kernel
         git clone https://github.com/OnePlusOSS/android_vendor_oneplus_opensource_kernel -b oneplus/SDM845_Q_10.0 msm --depth=1
         mkdir oneplus
-        cp -r ./msm/msm-4.14/* oneplus
-        echo "test on oneplus driver"
+        cp -r msm/msm-4.14/* oneplus
+        cp -r oneplus/* android-kernel/
 
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
