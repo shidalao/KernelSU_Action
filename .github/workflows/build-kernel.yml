@@ -1,4 +1,4 @@
-name: Build Kernel
+name: Build Kernel on lineageOS 2- for oneplus 6/T
 on:
   watch:
     types: [started]
