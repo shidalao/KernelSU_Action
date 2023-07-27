@@ -116,6 +116,8 @@ jobs:
         git clone https://github.com/shidalao/android_kernel_oneplus_sdm845_for_6t -b SDM845_Q_10.0 android-kernel --depth=1
         git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} lineageos --depth=1
         cp -Rf lineageos android-kernel
+        echo "show tree list on dir android-kernel"
+        tree android-kernel
 
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
