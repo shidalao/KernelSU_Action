@@ -113,11 +113,12 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         echo git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
-        git clone https://github.com/shidalao/android_kernel_oneplus_sdm845_for_6t -b SDM845_Q_10.0 android-kernel --depth=1
-        git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} lineageos --depth=1
-        cp -Rf lineageos android-kernel
-        git clone https://github.com/OnePlusOSS/android_vendor_oneplus_opensource_kernel -b oneplus/SDM845_Q_10.0 oneplus --depth=1
-        cp -r oneplus/* android-kernel/
+        # git clone https://github.com/shidalao/android_kernel_oneplus_sdm845_for_6t -b SDM845_Q_10.0 android-kernel --depth=1
+        # git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} lineageos --depth=1
+        # cp -Rf lineageos android-kernel
+        # git clone https://github.com/OnePlusOSS/android_vendor_oneplus_opensource_kernel -b oneplus/SDM845_Q_10.0 oneplus --depth=1
+        # cp -r oneplus/* android-kernel/
+        git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
 
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
