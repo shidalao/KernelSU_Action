@@ -118,6 +118,8 @@ jobs:
         cp -Rf lineageos android-kernel
         echo "show tree list on dir android-kernel"
         tree $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        pwd
+        tree /home/runner/work/KernelSU_Action/KernelSU_Action/kernel_workspace/
         
 
     - name: Download source boot image
