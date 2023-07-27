@@ -112,7 +112,7 @@ jobs:
     - name: Download kernel source
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        git clone https://github.com/shidalao/android_kernel_oneplus_sdm845_for_6t -b SDM845_Q_10.0 android-kernel --depth=1
+        git clone https://github.com/shidalao/android_kernel_oneplus_sm8150_for_7_serial -b SM8150_Q_10.0 android-kernel --depth=1
         
         git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} lineageos --depth=1
         cp -Rf lineageos android-kernel
