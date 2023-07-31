@@ -184,12 +184,18 @@ jobs:
         if [ ! -z ${{ env.KSU_EXPECTED_SIZE }} ] && [ ! -z ${{ env.KSU_EXPECTED_HASH }} ]; then
           export KSU_EXPECTED_SIZE=${{ env.KSU_EXPECTED_SIZE }}
           export KSU_EXPECTED_HASH=${{ env.KSU_EXPECTED_HASH }}
-        
+        fi
         echo "CONFIG_VIRTUALIZATION=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
         echo "CONFIG_KVM_ARM_HOST=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
         echo "CONFIG_KVM=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
         echo "CONFIG_KVM_MMIO=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
-        bash build_kernel.sh
+        
+        make -j$(nproc --all) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.EXTRA_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }}
+        if [ ${{ env.ENABLE_CCACHE }} = true ]; then
+            make -j$(nproc --all) CC="ccache clang" O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.EXTRA_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }}
+        else
+            make -j$(nproc --all) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.EXTRA_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }}
+        fi
 
     - name: Check a kernel output files
       run: |
