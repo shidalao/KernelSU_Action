@@ -1,4 +1,4 @@
-name: Build Kernel
+name: Build Kernel mi8 [dipper] bad
 on:
   watch:
     types: [started]
