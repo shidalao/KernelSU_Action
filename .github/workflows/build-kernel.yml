@@ -178,7 +178,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: build-kernel-${{ env.DEVICE }}${{ env.UPLOADNAME }}
-        max-size: 2G
+        max-size: 8G
 
     - name: Build kernel
       run: |
@@ -194,6 +194,10 @@ jobs:
         # echo "CONFIG_KVM_ARM_HOST=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
         # echo "CONFIG_KVM=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
         # echo "CONFIG_KVM_MMIO=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
+        
+        test -d out || mkdir out -p -v
+        test -d ../vnd || mkdir vnd -p -v
+        test -d ../vendor/mediatek/kernel_modules/gpu/gpu_mali/mali_valhall/mali-r25p0 || cp -r -v ../vendor/mediatek/kernel_modules/gpu/gpu_mali/mali_valhall/mali-r25p0 drivers/gpu/mediatek/gpu_mali/mali_valhall/
         
         make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }}
         if [ ${{ env.ENABLE_CCACHE }} = true ]; then
