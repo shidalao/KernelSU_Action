@@ -124,7 +124,9 @@ jobs:
         cp android_kernel_modules_oppo_mtk_4.19/vendor ./ -R
         mkdir -p -v ../vnd
         cp android_kernel_modules_oppo_mtk_4.19/vendor ../vnd -R
-        cp android_kernel_modules_oppo_mtk_4.19/vendor/oplus/kernel_4.19/audio/ ./android-kernel/sound/soc/codecs -R -v
+        cp android_kernel_modules_oppo_mtk_4.19/vendor/oplus/kernel_4.19/audio/ android-kernel/sound/soc/codecs -R -v
+        ls -l 
+        echo "listing directory"
     
     - name: Sync KernelSU
       run: |
@@ -188,10 +190,10 @@ jobs:
           export KSU_EXPECTED_SIZE=${{ env.KSU_EXPECTED_SIZE }}
           export KSU_EXPECTED_HASH=${{ env.KSU_EXPECTED_HASH }}
         fi
-        echo "CONFIG_VIRTUALIZATION=y" >> $GITHUB_WORKSPACE/kernel_workspace/android-kernel/arch/arm64/configs/vendor/r6p_nodtb_defconfig
-        echo "CONFIG_KVM_ARM_HOST=y" >> $GITHUB_WORKSPACE/kernel_workspace/android-kernel/arch/arm64/configs/vendor/r6p_nodtb_defconfig
-        echo "CONFIG_KVM=y" >> $GITHUB_WORKSPACE/kernel_workspace/android-kernel/arch/arm64/configs/vendor/r6p_nodtb_defconfig
-        echo "CONFIG_KVM_MMIO=y" >> $GITHUB_WORKSPACE/kernel_workspace/android-kernel/arch/arm64/configs/vendor/r6p_nodtb_defconfig
+        # echo "CONFIG_VIRTUALIZATION=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
+        # echo "CONFIG_KVM_ARM_HOST=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
+        # echo "CONFIG_KVM=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
+        # echo "CONFIG_KVM_MMIO=y" >> ./arch/arm64/configs/vendor/r6p_nodtb_defconfig
         
         make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }}
         if [ ${{ env.ENABLE_CCACHE }} = true ]; then
