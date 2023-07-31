@@ -1,4 +1,4 @@
-name: Build Kernel
+name: Build Kernel [LineageOS] for mi 8 [dipper]
 on:
   watch:
     types: [started]
