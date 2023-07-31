@@ -199,12 +199,34 @@ jobs:
         test -d ../vnd || mkdir vnd -p -v
         test -d ../vendor/mediatek/kernel_modules/gpu/gpu_mali/mali_valhall/mali-r25p0 || cp -r -v ../vendor/mediatek/kernel_modules/gpu/gpu_mali/mali_valhall/mali-r25p0 drivers/gpu/mediatek/gpu_mali/mali_valhall/
         
-        make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }}
-        if [ ${{ env.ENABLE_CCACHE }} = true ]; then
-            make -j$(nproc) CC="ccache clang" O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }}
-        else
-            make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }}
-        fi
+        # make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }}
+        # if [ ${{ env.ENABLE_CCACHE }} = true ]; then
+        #     make -j$(nproc) CC="ccache clang" O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }}
+        # else
+        #     make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }}
+        # fi
+        
+        BUILD_CROSS_COMPILE=${{ env.GCC_64 }}
+        # CLANG_PATH=$HOME/clang/bin
+        CROSS_COMPILE_ARM32=$HOME/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+
+        CLANG_TRIPLE=aarch64-linux-gnu-
+
+        export ARCH=arm64
+        # export PATH=${CLANG_PATH}:${PATH}
+
+        make -j$(nproc) -C $(pwd) O=$(pwd)/out CROSS_COMPILE=${{ env.GCC_64 }} CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE_ARM32=${{ env.GCC_32 }} \
+            CC=clang ${{ env.KERNEL_CONFIG }}
+        
+        A=$(date +%s)
+        make -j$(nproc) -C $(pwd) O=$(pwd)/out CROSS_COMPILE=${{ env.GCC_64 }} CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE_ARM32=${{ env.GCC_32 }} \
+            CC=clang \
+            -Werror \
+            2>&1 | tee build.txt
+        B=$(date +%s)
+        C=$(expr $B - $A)
+        #echo $(expr $C / 60)
+        echo "kernel finish" $(expr $C / 60)"min"$(expr $C % 60)"s"
 
     - name: Check a kernel output files
       run: |
