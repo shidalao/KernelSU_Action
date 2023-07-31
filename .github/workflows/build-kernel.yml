@@ -215,12 +215,9 @@ jobs:
         export ARCH=arm64
         # export PATH=${CLANG_PATH}:${PATH}
 
-        make -j$(nproc) -C $(pwd) O=$(pwd)/out CROSS_COMPILE=${{ env.GCC_64 }} CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE_ARM32=${{ env.GCC_32 }} \
-            CC=clang ${{ env.KERNEL_CONFIG }}
-        
+        make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }}
         A=$(date +%s)
-        make -j$(nproc) -C $(pwd) O=$(pwd)/out CROSS_COMPILE=${{ env.GCC_64 }} CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE_ARM32=${{ env.GCC_32 }} \
-            CC=clang \
+        make -j$(nproc) CC=clang O=out ARCH=${{ env.ARCH }} ${{ env.CUSTOM_CMDS }} ${{ env.GCC_64 }} ${{ env.GCC_32 }} ${{ env.KERNEL_CONFIG }} \
             -Werror \
             2>&1 | tee build.txt
         B=$(date +%s)
