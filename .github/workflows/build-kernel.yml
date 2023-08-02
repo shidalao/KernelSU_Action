@@ -112,16 +112,7 @@ jobs:
     - name: Download kernel source
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        git clone https://github.com/shidalao/android_kernel_oneplus_sm8150_for_7_serial -b SM8150_R_10.0 android-kernel --depth=1
-        git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} lineageos --depth=1
-        cp -Rf lineageos android-kernel
-        
-        git clone https://github.com/OnePlusOSS/android_vendor_oneplus_opensource_kernel -b oneplus/SM8150_R_10.0 msm --depth=1
-        mkdir oneplus
-        cp -r msm/msm-4.14/* oneplus
-        cp -r oneplus/* android-kernel/
-        echo "test on oneplus driver"
-        
+        git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1        
 
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
